@@ -1,15 +1,36 @@
 // src/lib/prptl.ts
 
-export const PRPTL_BASE = "https://prptl.io/-/nszbk-7iaaa-aaaap-abczq-cai";
+/* -------------------------------------------------------------------------- */
+/*                                  CANISTERS                                 */
+/* -------------------------------------------------------------------------- */
 
-// canister raw domain (per asset)
-const CANISTER_ID = "nszbk-7iaaa-aaaap-abczq-cai";
-const RAW_BASE = `https://${CANISTER_ID}.raw.icp0.io`;
+const CANISTERS = {
+  "100": "nszbk-7iaaa-aaaap-abczq-cai",     // 100% Made in Italy
+  madein: "ql47b-5iaaa-aaaap-ahcqa-cai",    // Made in Italy
+} as const;
+
+export type CollectionKey = keyof typeof CANISTERS;
+
+function prptlBase(collection: CollectionKey) {
+  return `https://prptl.io/-/${CANISTERS[collection]}`;
+}
+
+function rawBase(collection: CollectionKey) {
+  return `https://${CANISTERS[collection]}.raw.icp0.io`;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                    TYPES                                   */
+/* -------------------------------------------------------------------------- */
 
 export type CertificationType = "100%" | "madeinitaly" | "unknown";
 
 export type CompanySummary = {
   id: string;
+  // Nuovo: utile per badge e per capire da dove arrivano i dati
+  collection: CollectionKey;
+  certificationType: CertificationType;
+
   name: string;
   registeredOffice?: string;
   website?: string;
@@ -19,6 +40,11 @@ export type CompanySummary = {
 
 export type CompanyDetail = {
   id: string;
+
+  // Nuovo
+  collection: CollectionKey;
+  certificationType: CertificationType;
+
   name: string;
   aboutCompany?: string;
 
@@ -31,103 +57,97 @@ export type CompanyDetail = {
   social?: string;
 
   vatNumber?: string;
-  certificationType?: CertificationType;
 
   activityDescription?: string;
   certifiedProduct?: string;
 
   // TESTI “PROCESSO”
-  certificationProcessText?: string;     // Certification Process
+  certificationProcessText?: string;
 
-  // INFO LEGALI (per tab “Info / dati legali”)
-  fiscalCode?: string;                   // Fiscal Code
-  ateco?: string;                        // ATECO Code
-  chamberOfCommerce?: string;            // Chamber of Commerce Registration
+  // INFO LEGALI
+  fiscalCode?: string;
+  ateco?: string;
+  chamberOfCommerce?: string;
 
-  // EXTRA (opzionale, ma utile)
-  productPackaging?: string;             // Product Packaging
+  productPackaging?: string;
 
   // Fasi + date
-  preAnalysisRequestDate?: string;      // Pre-Analysis Date with Pass
-  preAnalysisApprovalDate?: string;     // Pre-Analysis Approval Date / 
+  preAnalysisRequestDate?: string;
+  preAnalysisApprovalDate?: string;
   certificationAccessRequestDate?: string;
   companyAuditDate?: string;
 
   auditors?: string;
 
-  issuanceDate?: string;                // Certification Issuance Date
-  expirationDate?: string;              // Certification Expiration Date
-  publicationDate?: string;             // Publication of Certificate on Blockchain
+  issuanceDate?: string;
+  expirationDate?: string;
+  publicationDate?: string;
 
-  thumbnailUrl?: string; // logo aziendale
+  thumbnailUrl?: string;
 
   videoUrl?: string;
   galleryUrls?: string[];
   attachments?: { name: string; url: string }[];
 };
 
-export async function fetchCompanyIds(): Promise<string[]> {
-  const res = await fetch(`${PRPTL_BASE}/collection`, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to fetch company IDs: ${res.status}`);
+/* -------------------------------------------------------------------------- */
+/*                               PUBLIC FUNCTIONS                             */
+/* -------------------------------------------------------------------------- */
 
-  const json = await res.json();
-  if (!Array.isArray(json)) return [];
+/**
+ * IDs: se chiamata senza argomenti, ritorna unione delle due collezioni (senza duplicati).
+ * Se vuoi solo una collezione: fetchCompanyIds("100") o fetchCompanyIds("madein")
+ */
+export async function fetchCompanyIds(collection?: CollectionKey): Promise<string[]> {
+  if (collection) return fetchCompanyIdsFromCollection(collection);
 
-  // supports: ["id", ...] OR [{id:"..."}, ...]
-  return json
-    .map((x: any) => (typeof x === "string" ? x : x?.id ?? x?.token_id ?? x?.tokenId))
-    .filter((x: any) => typeof x === "string" && x.length > 0);
+  const [a, b] = await Promise.all([
+    fetchCompanyIdsFromCollection("100"),
+    fetchCompanyIdsFromCollection("madein"),
+  ]);
+
+  return Array.from(new Set([...a, ...b]));
 }
 
 /**
- * Fetch raw /info text.
- * We DO NOT JSON.parse this payload because PRPTL frequently returns invalid JSON.
+ * Summary: prova 100% -> madein (fallback).
+ * Mantiene firma compatibile con il tuo codice attuale.
  */
-async function fetchInfoText(id: string): Promise<string | null> {
-  const res = await fetch(`${PRPTL_BASE}/-/${id}/info`, { cache: "no-store" });
-  if (res.status === 404) return null;
-  if (!res.ok) return null;
-  return res.text();
-}
-
 export async function fetchCompanySummary(id: string): Promise<CompanySummary | null> {
-  const text = await fetchInfoText(id);
-  if (!text) return null;
+  const s100 = await fetchCompanySummaryFromCollection("100", id);
+  if (s100) return s100;
 
-  const name =
-    extractLangValue(text, "Company Name", "it") ??
-    extractLangValue(text, "Company Name", "en") ??
-    "—";
+  const smi = await fetchCompanySummaryFromCollection("madein", id);
+  if (smi) return smi;
 
-  const registeredOffice =
-    extractLangValue(text, "Registered Office", "it") ??
-    extractLangValue(text, "Registered Office", "en");
-
-  const website =
-    extractLangValue(text, "Website", "it") ??
-    extractLangValue(text, "Website", "en");
-
-  const expirationMs = extractDateMs(text, "Certification Expiration Date");
-  const expirationDate =
-    typeof expirationMs === "number" ? new Date(expirationMs).toISOString() : undefined;
-
-  // ✅ logo aziendale via raw url
-  const logoPath = extractFilePath(text, "files-mainImage");
-  const thumbnailUrl = logoPath ? `${RAW_BASE}/-/${id}/-/${logoPath}` : undefined;
-
-  return {
-    id,
-    name: safeTrim(name) ?? "—",
-    registeredOffice: safeTrim(registeredOffice),
-    website: normalizeWebsite(safeTrim(website)),
-    expirationDate,
-    thumbnailUrl,
-  };
+  return null;
 }
 
+/**
+ * Detail: prova 100% -> madein (fallback).
+ * Mantiene firma compatibile con il tuo codice attuale.
+ */
 export async function fetchCompanyDetail(id: string): Promise<CompanyDetail | null> {
-  const text = await fetchInfoText(id);
+  const d100 = await fetchCompanyDetailFromCollection("100", id);
+  if (d100) return d100;
+
+  const dmi = await fetchCompanyDetailFromCollection("madein", id);
+  if (dmi) return dmi;
+
+  return null;
+}
+
+/**
+ * Utile se vuoi forzare una collezione (es. badge / pagine dedicate).
+ */
+export async function fetchCompanyDetailFromCollection(
+  collection: CollectionKey,
+  id: string
+): Promise<CompanyDetail | null> {
+  const text = await fetchInfoText(collection, id);
   if (!text) return null;
+
+  const RAW_BASE = rawBase(collection);
 
   const name =
     extractLangValue(text, "Company Name", "it") ??
@@ -166,22 +186,21 @@ export async function fetchCompanyDetail(id: string): Promise<CompanyDetail | nu
     extractLangValue(text, "Certified Product", "it") ??
     extractLangValue(text, "Certified Product", "en");
 
-
   const vatNumber =
     extractLangValue(text, "VAT Number", "it") ??
     extractLangValue(text, "VAT Number", "en");
 
-    // ✅ ABOUT (testo lungo)
-    const aboutCompany =
+  // About
+  const aboutCompany =
     extractLangValue(text, "About Italy is Unique", "it") ??
     extractLangValue(text, "About Italy is Unique", "en");
 
-  // ✅ PROCESSO CERTIFICATO (testo lungo)
+  // Processo
   const certificationProcessText =
     extractLangValue(text, "Certification Process", "it") ??
     extractLangValue(text, "Certification Process", "en");
 
-  // ✅ INFO LEGALI
+  // Info legali
   const fiscalCode =
     extractLangValue(text, "Fiscal Code", "it") ??
     extractLangValue(text, "Fiscal Code", "en");
@@ -194,19 +213,11 @@ export async function fetchCompanyDetail(id: string): Promise<CompanyDetail | nu
     extractLangValue(text, "Chamber of Commerce Registration", "it") ??
     extractLangValue(text, "Chamber of Commerce Registration", "en");
 
-  // ✅ (opzionale) Packaging
   const productPackaging =
     extractLangValue(text, "Product Packaging", "it") ??
     extractLangValue(text, "Product Packaging", "en");
 
-  // Tipo certificazione: euristica (migliorabile se c’è un campo dedicato)
-  const certificationType: CertificationType = /100%\s*made\s*in\s*italy/i.test(text)
-    ? "100%"
-    : /made\s*in\s*italy/i.test(text)
-      ? "madeinitaly"
-      : "unknown";
-
-  // Fasi con date
+  // Date fasi
   const preAnalysisRequestMs = extractDateMs(text, "Pre-Analysis Date with Pass");
   const preAnalysisApprovalMs = extractDateMs(text, "Pre-Analysis Approval Date / ");
   const certificationAccessRequestMs = extractDateMs(text, "Certification Access Request Date");
@@ -239,13 +250,15 @@ export async function fetchCompanyDetail(id: string): Promise<CompanyDetail | nu
   const publicationDate =
     typeof publicationMs === "number" ? new Date(publicationMs).toISOString() : undefined;
 
-  // ✅ logo aziendale via raw url
+  // Logo
   const logoPath = extractFilePath(text, "files-mainImage");
   const thumbnailUrl = logoPath ? `${RAW_BASE}/-/${id}/-/${logoPath}` : undefined;
 
+  // Video
   const videoPath = extractFilePath(text, "files-video");
   const videoUrl = videoPath ? `${RAW_BASE}/-/${id}/-/${videoPath}` : undefined;
 
+  // Gallery (solo immagini)
   const mediaPaths = extractFilePaths(text, "files-media");
   const isImage = (p: string) => /\.(png|jpe?g|webp|gif|svg)$/i.test(p);
 
@@ -253,6 +266,7 @@ export async function fetchCompanyDetail(id: string): Promise<CompanyDetail | nu
     .filter(isImage)
     .map((p) => `${RAW_BASE}/-/${id}/-/${p}`);
 
+  // Attachments: pointer + library location + fallback library docs
   const attachmentPaths = extractFilePaths(text, "files-attachments");
 
   let attachments = attachmentPaths
@@ -262,28 +276,37 @@ export async function fetchCompanyDetail(id: string): Promise<CompanyDetail | nu
     })
     .filter((x) => x.url) as { name: string; url: string }[];
 
-    // fallback se vuoto
-    if (attachments.length === 0) {
-      attachments = extractLibraryDocuments(text);
-    }
+  if (attachments.length === 0) {
+    attachments = extractLibraryDocuments(text);
+  }
 
-    // ✅ escludi loghi
-    attachments = attachments.filter((f) => !/logo/i.test(f.name));
+  // Escludi loghi solo se sono immagini
+  attachments = attachments.filter((f) => {
+    const isLogo = /logo/i.test(f.name);
+    const isLogoImage = /\.(png|jpe?g|svg|webp)$/i.test(f.name);
+    return !(isLogo && isLogoImage);
+  });
 
+  const certificationType: CertificationType =
+    collection === "100" ? "100%" : "madeinitaly";
 
   return {
     id,
+    collection,
+    certificationType,
+
     name: safeTrim(name) ?? "—",
     aboutCompany: safeTrim(aboutCompany),
+
     registeredOffice: safeTrim(registeredOffice),
     operationalHq: safeTrim(operationalHq),
+
     phone: safeTrim(phone),
     email: safeTrim(email),
     website: normalizeWebsite(safeTrim(website)),
     social: safeTrim(social),
 
     vatNumber: safeTrim(vatNumber),
-    certificationType,
 
     certificationProcessText: safeTrim(certificationProcessText),
 
@@ -312,6 +335,82 @@ export async function fetchCompanyDetail(id: string): Promise<CompanyDetail | nu
   };
 }
 
+/**
+ * Utile se vuoi forzare una collezione per summary.
+ */
+export async function fetchCompanySummaryFromCollection(
+  collection: CollectionKey,
+  id: string
+): Promise<CompanySummary | null> {
+  const text = await fetchInfoText(collection, id);
+  if (!text) return null;
+
+  const RAW_BASE = rawBase(collection);
+
+  const name =
+    extractLangValue(text, "Company Name", "it") ??
+    extractLangValue(text, "Company Name", "en") ??
+    "—";
+
+  const registeredOffice =
+    extractLangValue(text, "Registered Office", "it") ??
+    extractLangValue(text, "Registered Office", "en");
+
+  const website =
+    extractLangValue(text, "Website", "it") ??
+    extractLangValue(text, "Website", "en");
+
+  const expirationMs = extractDateMs(text, "Certification Expiration Date");
+  const expirationDate =
+    typeof expirationMs === "number" ? new Date(expirationMs).toISOString() : undefined;
+
+  const logoPath = extractFilePath(text, "files-mainImage");
+  const thumbnailUrl = logoPath ? `${RAW_BASE}/-/${id}/-/${logoPath}` : undefined;
+
+  const certificationType: CertificationType =
+    collection === "100" ? "100%" : "madeinitaly";
+
+  return {
+    id,
+    collection,
+    certificationType,
+    name: safeTrim(name) ?? "—",
+    registeredOffice: safeTrim(registeredOffice),
+    website: normalizeWebsite(safeTrim(website)),
+    expirationDate,
+    thumbnailUrl,
+  };
+}
+
+/* -------------------------------------------------------------------------- */
+/*                               INTERNAL HELPERS                             */
+/* -------------------------------------------------------------------------- */
+
+async function fetchCompanyIdsFromCollection(collection: CollectionKey): Promise<string[]> {
+  const base = prptlBase(collection);
+
+  const res = await fetch(`${base}/collection`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to fetch company IDs (${collection}): ${res.status}`);
+
+  const json = await res.json();
+  if (!Array.isArray(json)) return [];
+
+  return json
+    .map((x: any) => (typeof x === "string" ? x : x?.id ?? x?.token_id ?? x?.tokenId))
+    .filter((x: any) => typeof x === "string" && x.length > 0);
+}
+
+/**
+ * Fetch raw /info text (NO JSON.parse).
+ */
+async function fetchInfoText(collection: CollectionKey, id: string): Promise<string | null> {
+  const base = prptlBase(collection);
+  const res = await fetch(`${base}/-/${id}/info`, { cache: "no-store" });
+  if (res.status === 404) return null;
+  if (!res.ok) return null;
+  return res.text();
+}
+
 /* -----------------------------
    Extractors (tolerant)
 ----------------------------- */
@@ -333,39 +432,27 @@ function escapeRegExp(str: string) {
 }
 
 /**
- * Looks for:
- * "FIELD": { ... "content": { "it": "VALUE" ... } }
- * It's intentionally tolerant and stops at the first quote.
+ * Robust lang extractor (handles quotes inside).
  */
-function extractLangValue(
-  text: string,
-  fieldName: string,
-  lang: "it" | "en"
-): string | undefined {
-  // 1) trova l'inizio del blocco del campo ("Certification Process": { ... })
+function extractLangValue(text: string, fieldName: string, lang: "it" | "en"): string | undefined {
   const fieldRe = new RegExp(`"${escapeRegExp(fieldName)}"\\s*:\\s*\\{`, "i");
   const fieldMatch = fieldRe.exec(text);
   if (!fieldMatch) return undefined;
 
-  // Limitiamo la ricerca per evitare di matchare altre parti del JSON
   const start = fieldMatch.index;
-  const windowText = text.slice(start, start + 20000); // window ampia per testi lunghi
+  const windowText = text.slice(start, start + 25000);
 
-  // 2) trova l’inizio del valore:  "it": "
   const langRe = new RegExp(`"${lang}"\\s*:\\s*"`, "i");
   const langMatch = langRe.exec(windowText);
   if (!langMatch) return undefined;
 
-  let i = langMatch.index + langMatch[0].length; // posizione subito dopo l’apertura "
+  let i = langMatch.index + langMatch[0].length;
 
-  // 3) leggi fino alla fine stringa, MA permetti virgolette interne
-  //    Una virgoletta chiude la stringa SOLO se dopo c’è , oppure } oppure ] (dopo eventuali spazi)
   let out = "";
   while (i < windowText.length) {
     const ch = windowText[i];
 
     if (ch === "\\") {
-      // conserva escape sequences standard
       const next = windowText[i + 1];
       if (next) {
         out += ch + next;
@@ -375,17 +462,14 @@ function extractLangValue(
     }
 
     if (ch === '"') {
-      // lookahead al prossimo carattere non-whitespace
       let k = i + 1;
       while (k < windowText.length && /\s/.test(windowText[k])) k++;
       const nextNonWs = k < windowText.length ? windowText[k] : "";
 
-      // chiusura reale della stringa
       if (nextNonWs === "," || nextNonWs === "}" || nextNonWs === "]") {
         return out;
       }
 
-      // altrimenti è una virgoletta interna: la teniamo
       out += '"';
       i += 1;
       continue;
@@ -398,9 +482,6 @@ function extractLangValue(
   return out || undefined;
 }
 
-/**
- * "FIELD": { ... "content": { "date": 1759269600000 } }
- */
 function extractDateMs(text: string, fieldName: string): number | undefined {
   const re = new RegExp(
     `"${escapeRegExp(fieldName)}"\\s*:\\s*\\{[\\s\\S]*?"content"\\s*:\\s*\\{[\\s\\S]*?"date"\\s*:\\s*(\\d+)`,
@@ -413,8 +494,7 @@ function extractDateMs(text: string, fieldName: string): number | undefined {
 }
 
 /**
- * Estrae il path del logo dal blocco files-mainImage.
- * "files-mainImage": [ { ... "path": "l1.jpg" } ]
+ * First file path in files-*
  */
 function extractFilePath(text: string, pointerName: string): string | undefined {
   const re = new RegExp(
@@ -425,21 +505,40 @@ function extractFilePath(text: string, pointerName: string): string | undefined 
   return m?.[1];
 }
 
+/**
+ * Multiple file paths in files-*
+ */
 function extractFilePaths(text: string, pointerName: string): string[] {
   const startRe = new RegExp(`"${escapeRegExp(pointerName)}"\\s*:\\s*\\[`, "i");
   const startMatch = startRe.exec(text);
   if (!startMatch) return [];
 
-  // finestra ampia dopo l’inizio dell’array (di solito basta)
-  const startIndex = startMatch.index;
-  const windowText = text.slice(startIndex, startIndex + 30000);
+  // bracket matching (robusto)
+  const bracketStart = text.indexOf("[", startMatch.index);
+  if (bracketStart === -1) return [];
+
+  let depth = 0;
+  let endIndex = bracketStart;
+
+  for (let i = bracketStart; i < text.length; i++) {
+    if (text[i] === "[") depth++;
+    if (text[i] === "]") {
+      depth--;
+      if (depth === 0) {
+        endIndex = i;
+        break;
+      }
+    }
+  }
+
+  const arrayBlock = text.slice(bracketStart, endIndex + 1);
 
   const pathRe = /"path"\s*:\s*"([^"]+)"/g;
   const paths: string[] = [];
   let m: RegExpExecArray | null;
 
-  while ((m = pathRe.exec(windowText))) {
-    paths.push(m[1]);
+  while ((m = pathRe.exec(arrayBlock))) {
+    paths.push(m[1].trim());
   }
 
   return Array.from(new Set(paths));
@@ -448,7 +547,6 @@ function extractFilePaths(text: string, pointerName: string): string[] {
 function extractLibraryLocation(text: string, filename: string): string | undefined {
   const key = escapeRegExp(filename.trim());
 
-  // prova match su filename
   const re1 = new RegExp(
     `"filename"\\s*:\\s*"${key}"[\\s\\S]*?"location"\\s*:\\s*"([^"]+)"`,
     "i"
@@ -456,7 +554,6 @@ function extractLibraryLocation(text: string, filename: string): string | undefi
   const m1 = text.match(re1);
   if (m1?.[1]) return m1[1];
 
-  // fallback: prova match su library_id
   const re2 = new RegExp(
     `"library_id"\\s*:\\s*"${key}"[\\s\\S]*?"location"\\s*:\\s*"([^"]+)"`,
     "i"
@@ -465,26 +562,18 @@ function extractLibraryLocation(text: string, filename: string): string | undefi
   return m2?.[1];
 }
 
-function extractLibraryDocuments(
-  text: string
-): { name: string; url: string }[] {
+function extractLibraryDocuments(text: string): { name: string; url: string }[] {
   const docExt = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar)$/i;
-
-  const re =
-    /"filename"\s*:\s*"([^"]+)"[\s\S]*?"location"\s*:\s*"([^"]+)"/g;
+  const re = /"filename"\s*:\s*"([^"]+)"[\s\S]*?"location"\s*:\s*"([^"]+)"/g;
 
   const out: { name: string; url: string }[] = [];
   let m: RegExpExecArray | null;
 
   while ((m = re.exec(text))) {
-    const filename = m[1];
+    const filename = (m[1] || "").trim();
     const location = m[2];
-
-    if (docExt.test(filename)) {
-      out.push({ name: filename, url: location });
-    }
+    if (docExt.test(filename)) out.push({ name: filename, url: location });
   }
 
-  // rimuove duplicati
   return Array.from(new Map(out.map((x) => [x.url, x])).values());
 }

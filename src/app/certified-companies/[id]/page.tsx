@@ -1,6 +1,8 @@
 // src/app/certified-companies/[id]/page.tsx
 import React from "react";
 import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -186,6 +188,7 @@ export default async function CertifiedCompanyPage({
   const emailHref = c.email ? `mailto:${c.email}` : undefined;
 
   const description = firstTwoSentences(c.activityDescription);
+  const isHundred = c.collection === "100";
 
   return (
     <main className="container py-10 space-y-16">
@@ -324,8 +327,16 @@ export default async function CertifiedCompanyPage({
           <CardBody className="group/card flex h-full w-full flex-col items-center justify-center rounded-3xl border border-primary bg-chart-4 p-4 space-y-4 shadow-xl">
             <CardItem className="flex items-center justify-center gap-4">
               <img
-                src="/images/certificazioni/100-made-in-italy-federitaly.webp"
-                alt="Certificato Federitaly 100% Made in Italy"
+                src={
+                  isHundred
+                    ? "/images/certificazioni/100-made-in-italy-federitaly.webp"
+                    : "/images/certificazioni/made-in-italy-federitaly.webp"
+                }
+                alt={
+                  isHundred
+                    ? "Certificato Federitaly 100% Made in Italy"
+                    : "Certificato Federitaly Made in Italy"
+                }
                 className="h-30 w-30 object-contain"
               />
             </CardItem>
@@ -427,6 +438,14 @@ export default async function CertifiedCompanyPage({
       />
 
       <VideoCertification videoUrl={c.videoUrl} />
+      <div className="text-center flex flex-col space-y-2 justify-center items-center">
+        <p className="text-xs text-muted-foreground">Tutti i dati presenti in questa pagina sono notarizzati sulla blockchain di <strong>Internet Computer</strong>, con il supporto tecnico di <strong>Origyn</strong>, a garanzia di trasparenza e integrità delle informazioni.</p>
+        <p className="text-xs text-muted-foreground">È possibile interrogare il registro onchain tramite i link: <Link className="text-primary" href="https://dashboard.internetcomputer.org/canister/nszbk-7iaaa-aaaap-abczq-cai">100% Made in Italy</Link> e <Link className="text-primary" href="https://dashboard.internetcomputer.org/canister/ql47b-5iaaa-aaaap-ahcqa-cai">Made in Italy</Link></p>
+        <span className="flex items-center gap-6">
+          <Image src="/images/logos/ic-logo.png" alt="Internet Computer" width={100} height={100} />
+          <Image src="/images/logos/origyn-logo.png" alt="Origyn" width={100} height={100} />
+        </span>
+      </div>
     </main>
   );
 }

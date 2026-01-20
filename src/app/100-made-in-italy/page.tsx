@@ -9,13 +9,11 @@ import FeaturesShowcase from "@/components/sections/features-showcase";
 
 export default function Certification100MadeInItalyPage() {
   return (
-    <main className="py-10" style={{
-      background:
-        "radial-gradient(250% 250% at 50% 110%, var(--background) 40%, var(--primary) 60%)",
-    }}>
+    <main>
       {/* HERO */}
-      <section className="container">
-        <div className="grid gap-8 lg:grid-cols-2 lg:items-center mt-16">
+      <section className="bg-[url(/images/bg-azzurro.png)] bg-cover bg-center bg-no-repeat relative flex flex-col items-center">
+      <div className="container z-1">
+      <div className="grid gap-8 lg:grid-cols-2 lg:items-center mt-16">
           <div className="col-span-1 flex flex-col space-y-6 text-center lg:text-left justify-center lg:justify-start">
             <Badge variant="default" className="text-sm text-primary group flex w-fit self-center lg:self-start items-center justify-center rounded-full border border-primary/10 bg-chart-4 px-4 py-1 tracking-tight shadow-lg/5">
                 <BadgeCheck className="size-6 text-md" /> Certificazione Federitaly
@@ -51,7 +49,8 @@ export default function Certification100MadeInItalyPage() {
             <Image src="/images/certificazioni/100-made-in-italy-federitaly.webp" alt="Certificazione Federitaly 100% Made in Italy" width={400} height={400} className="w-fit" />
           </div>
         </div>
-
+      </div>
+      <div className="from-background pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent via-25% to-transparent z-0" />
       </section>
 
       {/* COSA CERTIFICA */}

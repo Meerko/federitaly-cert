@@ -39,7 +39,8 @@ import { CompanyLegalInfo } from "@/components/sections/cert-company-legal";
 /* -------------------------------------------------------------------------- */
 
 type CertifiedCompanyPageProps = {
-  params: any;
+  // ✅ Next 16: params può arrivare come Promise
+  params: Promise<{ id: string }>;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -167,7 +168,10 @@ function splitCertifiedProducts(text: string): string[] {
 export default async function CertifiedCompanyPage({
   params,
 }: CertifiedCompanyPageProps) {
-  const c = await fetchCompanyDetail(params.id);
+  // ✅ unwrap params prima di usare id (Next 16)
+  const { id } = await params;
+
+  const c = await fetchCompanyDetail(id);
   if (!c) notFound();
 
   const expired = isExpired(c.expirationDate);
@@ -200,167 +204,216 @@ export default async function CertifiedCompanyPage({
           {/* Contatti come pills con icona */}
           <div className="flex flex-wrap gap-2">
             {websiteHref && (
-              <ContactPill href={websiteHref} label="Sito Web" icon={<Globe size={16} />} />
+              <ContactPill
+                href={websiteHref}
+                label="Sito Web"
+                icon={<Globe size={16} />}
+              />
             )}
             {phoneHref && (
-              <ContactPill href={phoneHref} label="Telefono" icon={<Phone size={16} />} />
+              <ContactPill
+                href={phoneHref}
+                label="Telefono"
+                icon={<Phone size={16} />}
+              />
             )}
             {emailHref && (
-              <ContactPill href={emailHref} label="Email" icon={<Mail size={16} />} />
+              <ContactPill
+                href={emailHref}
+                label="Email"
+                icon={<Mail size={16} />}
+              />
             )}
           </div>
 
           {/* Estratto descrizione (prime 2 frasi) */}
           {description && (
-            <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {description}
+            </p>
           )}
 
           {/* BLOCCO 3 — Descrizione azienda + Prodotti certificati */}
-            <div className="rounded-xl border border-input p-4 space-y-4">
+          <div className="rounded-xl border border-input p-4 space-y-4">
             {c.certificationProcessText && (
-                <div className="space-y-2">
+              <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm font-semibold">
-                    <span className="border border-input rounded-md p-1">
-                        <GanttChartIcon className="size-4 text-primary" />
-                    </span>
-                    <span className="text-sm font-semibold">Processo produttivo certificato</span>
+                  <span className="border border-input rounded-md p-1">
+                    <GanttChartIcon className="size-4 text-primary" />
+                  </span>
+                  <span className="text-sm font-semibold">
+                    Processo produttivo certificato
+                  </span>
                 </div>
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                    {c.certificationProcessText}
+                  {c.certificationProcessText}
                 </p>
-                </div>
+              </div>
             )}
+
             {/* Prodotti certificati */}
             <Collapsible className="w-full">
-                <CollapsibleTrigger className="z-1 w-full group border border-input rounded-md inline-flex items-center justify-between p-2 text-muted-foreground bg-chart-4">
-                    <div className="flex items-center gap-2">
-                        <span className="border border-input rounded-md p-1">
-                            <Package className="size-4 text-primary" />
-                        </span>
-                        <span className="text-sm font-semibold">Prodotti con processo certificato</span>
-                    </div>
-                    <ChevronDown className="size-4 mr-2 transition-transform group-data-[state=open]:rotate-180" />
-                </CollapsibleTrigger>
-                <CollapsibleContent className="z-0 -mt-4 space-y-3 p-3 pt-8 border border-input border-t-0 rounded-md">
-                    <div className="space-y-3">
-                        {c.certifiedProduct && (
-                            <ul className="space-y-2">
-                                {splitCertifiedProducts(c.certifiedProduct).map((p) => (
-                                <li key={p} className="flex items-start gap-2">
-                                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border bg-background">
-                                    <BadgeCheck className="size-4 text-primary" />
-                                    </span>
+              <CollapsibleTrigger className="z-1 w-full group border border-input rounded-md inline-flex items-center justify-between p-2 text-muted-foreground bg-chart-4">
+                <div className="flex items-center gap-2">
+                  <span className="border border-input rounded-md p-1">
+                    <Package className="size-4 text-primary" />
+                  </span>
+                  <span className="text-sm font-semibold">
+                    Prodotti con processo certificato
+                  </span>
+                </div>
+                <ChevronDown className="size-4 mr-2 transition-transform group-data-[state=open]:rotate-180" />
+              </CollapsibleTrigger>
 
-                                    <span className="text-sm text-foreground/90 leading-snug">
-                                    {p}
-                                    </span>
-                                </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-                </CollapsibleContent>
+              <CollapsibleContent className="z-0 -mt-4 space-y-3 p-3 pt-8 border border-input border-t-0 rounded-md">
+                <div className="space-y-3">
+                  {c.certifiedProduct && (
+                    <ul className="space-y-2">
+                      {splitCertifiedProducts(c.certifiedProduct).map((p) => (
+                        <li key={p} className="flex items-start gap-2">
+                          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border bg-background">
+                            <BadgeCheck className="size-4 text-primary" />
+                          </span>
+
+                          <span className="text-sm text-foreground/90 leading-snug">
+                            {p}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </CollapsibleContent>
             </Collapsible>
+
+            {/* Documenti: mostra solo se presenti */}
             {c.attachments && c.attachments.length > 0 && (
               <Collapsible className="w-full">
                 <CollapsibleTrigger className="z-1 w-full group border border-input rounded-md inline-flex items-center justify-between p-2 text-muted-foreground bg-chart-4">
-                    <div className="flex items-center gap-2">
-                        <span className="border border-input rounded-md p-1">
-                            <Folder className="size-4 text-primary" />
-                        </span>
-                        <span className="text-sm font-semibold">Documenti</span>
-                    </div>
-                    <ChevronDown className="size-4 mr-2 transition-transform group-data-[state=open]:rotate-180" />
+                  <div className="flex items-center gap-2">
+                    <span className="border border-input rounded-md p-1">
+                      <Folder className="size-4 text-primary" />
+                    </span>
+                    <span className="text-sm font-semibold">Documenti</span>
+                  </div>
+                  <ChevronDown className="size-4 mr-2 transition-transform group-data-[state=open]:rotate-180" />
                 </CollapsibleTrigger>
+
                 <CollapsibleContent className="z-0 -mt-4 space-y-3 p-3 pt-8 border border-input border-t-0 rounded-md">
-                    <div className="space-y-3">
-                      <ul className="space-y-2">
-                          {c.attachments?.length ? (
-                                <DocumentListAI companyId={c.id} docs={(c.attachments ?? []).map(a => ({ url: a.url, filename: a.name }))} />
-                          ) : null}
-                      </ul>
-                    </div>
+                  <div className="space-y-3">
+                    <ul className="space-y-2">
+                      {c.attachments?.length ? (
+                        <DocumentListAI
+                          companyId={c.id}
+                          docs={(c.attachments ?? []).map((a) => ({
+                            url: a.url,
+                            filename: a.name,
+                          }))}
+                        />
+                      ) : null}
+                    </ul>
+                  </div>
                 </CollapsibleContent>
               </Collapsible>
             )}
-            </div>
+          </div>
         </div>
 
         {/* RIGHT: render certificato */}
         <CardContainer className="w-full">
-            <CardBody className="group/card flex h-full w-full flex-col items-center justify-center rounded-3xl border border-primary bg-chart-4 p-4 space-y-4 shadow-xl">
-                <CardItem className="flex items-center justify-center gap-4">
-                <img
-                    src='/images/certificazioni/100-made-in-italy-federitaly.webp'
-                    alt='Certificato Federitaly 100% Made in Italy'
-                    className="h-30 w-30 object-contain"
-                />
-                </CardItem>
-                <CardContent className="w-full space-y-4 p-0">
-                    <div className="rounded-xl border bg-muted/30 p-5">
-                        <div className="flex">
-                            <div className="grid gap-1 w-full">
-                                <div className="text-xs opacity-50">Certificazione</div>
-                                <div className="text-lg font-semibold">{certTypeLabel(c.certificationType)}</div>
-                            </div>
-                        </div>
+          <CardBody className="group/card flex h-full w-full flex-col items-center justify-center rounded-3xl border border-primary bg-chart-4 p-4 space-y-4 shadow-xl">
+            <CardItem className="flex items-center justify-center gap-4">
+              <img
+                src="/images/certificazioni/100-made-in-italy-federitaly.webp"
+                alt="Certificato Federitaly 100% Made in Italy"
+                className="h-30 w-30 object-contain"
+              />
+            </CardItem>
 
-                        <div className="mt-4 grid gap-1">
-                            <div className="text-xs opacity-50">Azienda</div>
-                            <div className="text-sm font-medium">{c.name}</div>
-                        </div>
+            <CardContent className="w-full space-y-4 p-0">
+              <div className="rounded-xl border bg-muted/30 p-5">
+                <div className="flex">
+                  <div className="grid gap-1 w-full">
+                    <div className="text-xs opacity-50">Certificazione</div>
+                    <div className="text-lg font-semibold">
+                      {certTypeLabel(c.certificationType)}
+                    </div>
+                  </div>
+                </div>
 
-                    <div className="mt-4 flex">
-                            <div className="grid gap-1 w-full">
-                                <div className="text-xs opacity-50">Data di rilascio</div>
-                                <div className="text-sm font-medium">{formatDateIt(c.issuanceDate)}</div>
-                            </div>
-                            <div className="grid gap-1 w-full">
-                                <div className="text-xs opacity-50">Data di scadenza</div>
-                                <div className="text-sm font-medium">{formatDateIt(c.expirationDate)}</div>
-                            </div>
-                    </div>
-                    <div className="mt-4 flex">
-                            <div className="grid gap-1 w-full">
-                                <div className="text-xs opacity-50">Auditor</div>
-                                <div className="text-sm font-medium">{c.auditors ?? "—"}</div>
-                            </div>
-                            <div className="grid gap-1 w-full">
-                                <div className="text-xs opacity-50">ID Certificazione</div>
-                                <div className="text-sm font-medium">{c.id}</div>
-                            </div>
-                        </div>
-                    </div>
+                <div className="mt-4 grid gap-1">
+                  <div className="text-xs opacity-50">Azienda</div>
+                  <div className="text-sm font-medium">{c.name}</div>
+                </div>
 
-                    {/* Timeline fasi audit */}
-                    <div className="rounded-xl border p-4">
-                    <div className="text-sm font-semibold flex items-center gap-2"> 
-                        <span className="border border-input rounded-md p-1">
-                            <StampIcon className="size-4 text-primary" /> 
-                        </span>
-                        <span>Fasi di audit</span></div>
-                        <div className="mt-2">
-                            <TimelineRow label="Pre-analisi (richiesta)" value={formatDateIt(c.preAnalysisRequestDate)} />
-                            <TimelineRow label="Pre-analisi (approvazione)" value={formatDateIt(c.preAnalysisApprovalDate)} />
-                            <TimelineRow label="Richiesta accesso certificazione" value={formatDateIt(c.certificationAccessRequestDate)} />
-                            <TimelineRow label="Audit in azienda" value={formatDateIt(c.companyAuditDate)} />
-                        </div>
+                <div className="mt-4 flex">
+                  <div className="grid gap-1 w-full">
+                    <div className="text-xs opacity-50">Data di rilascio</div>
+                    <div className="text-sm font-medium">
+                      {formatDateIt(c.issuanceDate)}
                     </div>
-                </CardContent>
-            </CardBody>
+                  </div>
+                  <div className="grid gap-1 w-full">
+                    <div className="text-xs opacity-50">Data di scadenza</div>
+                    <div className="text-sm font-medium">
+                      {formatDateIt(c.expirationDate)}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex">
+                  <div className="grid gap-1 w-full">
+                    <div className="text-xs opacity-50">Auditor</div>
+                    <div className="text-sm font-medium">
+                      {c.auditors ?? "—"}
+                    </div>
+                  </div>
+                  <div className="grid gap-1 w-full">
+                    <div className="text-xs opacity-50">ID Certificazione</div>
+                    <div className="text-sm font-medium">{c.id}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Timeline fasi audit */}
+              <div className="rounded-xl border p-4">
+                <div className="text-sm font-semibold flex items-center gap-2">
+                  <span className="border border-input rounded-md p-1">
+                    <StampIcon className="size-4 text-primary" />
+                  </span>
+                  <span>Fasi di audit</span>
+                </div>
+                <div className="mt-2">
+                  <TimelineRow
+                    label="Pre-analisi (richiesta)"
+                    value={formatDateIt(c.preAnalysisRequestDate)}
+                  />
+                  <TimelineRow
+                    label="Pre-analisi (approvazione)"
+                    value={formatDateIt(c.preAnalysisApprovalDate)}
+                  />
+                  <TimelineRow
+                    label="Richiesta accesso certificazione"
+                    value={formatDateIt(c.certificationAccessRequestDate)}
+                  />
+                  <TimelineRow
+                    label="Audit in azienda"
+                    value={formatDateIt(c.companyAuditDate)}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </CardBody>
         </CardContainer>
       </div>
-      
+
       <div className="grid gap-6 lg:grid-cols-3 lg:items-center">
         <div className="w-full col-span-2 lg:pr-16 space-y-4">
-            <h2 className="text-3xl">Scopri l'azienda</h2>
-            <AboutAI
-              companyId={c.id}
-              aboutOriginal={c.aboutCompany}
-            />
+          <h2 className="text-3xl">Scopri l'azienda</h2>
+          <AboutAI companyId={c.id} aboutOriginal={c.aboutCompany} />
         </div>
         <div className="w-full">
-            <ProductGallery images={c.galleryUrls?.map((src) => ({ src }))} />
+          <ProductGallery images={c.galleryUrls?.map((src) => ({ src }))} />
         </div>
       </div>
 
@@ -372,8 +425,8 @@ export default async function CertifiedCompanyPage({
         registeredOffice={c.registeredOffice}
         operationalHq={c.operationalHq}
       />
-      
-      <VideoCertification videoUrl={c.videoUrl}/>
+
+      <VideoCertification videoUrl={c.videoUrl} />
     </main>
   );
 }

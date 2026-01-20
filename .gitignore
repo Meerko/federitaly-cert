@@ -1,0 +1,69 @@
+# =========================
+# Dependencies
+# =========================
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# =========================
+# Next.js build output
+# =========================
+.next/
+out/
+build/
+
+# =========================
+# Vercel
+# =========================
+.vercel
+
+# =========================
+# Environment variables
+# (NEVER commit secrets)
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Logs
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Testing / Coverage
+# =========================
+coverage/
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# OS / Editor junk
+# =========================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# =========================
+# Misc
+# =========================
+*.pem
+*.key
+
+# =========================
+# Turbopack cache (Next 13+)
+# =========================
+.turbo/

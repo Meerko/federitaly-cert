@@ -84,9 +84,8 @@ interface FeatureCardProps {
 
 function FeatureCard({ image, imageAlt, title, description, className }: FeatureCardProps) {
   return (
-    <Card className={cn('h-full', className)}>
+    <Card className={cn('h-full border border-secondary/10', className)}>
       <CardContent>
-        {/* ✅ Altezza UGUALE per tutte */}
         <div className="relative h-60 w-full overflow-hidden rounded-lg bg-muted">
           <Image
             src={image}

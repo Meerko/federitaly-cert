@@ -3,14 +3,15 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Gloock } from 'next/font/google';
-import { cookies } from 'next/headers';
 
-import Banner from '@/components/layout/banner';
+
 import Footer from '@/components/layout/footer';
 import Navbar from '@/components/layout/navbar';
 import { StyleGlideProvider } from '@/components/styleglide-provider';
 import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
+
+import SilktideConsent from '@/components/cookie/SilktideConsent';
 
 const inter = Inter({
   variable: '--font-epilogue',
@@ -74,14 +75,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Federitaly',
-    description:
-      'Federazione di imprese per la tutela e la promozione del Made in Italy nel mondo',
-    images: ['/og-image.jpg'],
-    creator: 'Mirko Maggiore - Web & Communication Designer',
-  },
 };
 
 export default async function RootLayout({
@@ -89,12 +82,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Read banner dismissed state from cookies (server-side)
-  const cookieStore = await cookies();
-  const bannerDismissed = cookieStore.get('banner-dismissed')?.value === 'true';
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="it" suppressHydrationWarning>
+      <head>
+        <link
+          rel="stylesheet"
+          id="silktide-consent-manager-css"
+          href="/cookie-banner/silktide-consent-manager.css"
+        />
+      </head>
       <body
         className={cn(
           'flex min-h-screen flex-col antialiased [--header-height:calc(var(--spacing)*14)] lg:[--header-height:calc(var(--spacing)*23)]',
@@ -107,14 +104,11 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <StyleGlideProvider />
-          <Banner
-            url="https://www.federitaly.it/bando"
-            initialVisible={!bannerDismissed}
-          />
-          <Navbar initialBannerVisible={!bannerDismissed} />
+          <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
         </ThemeProvider>
+        <SilktideConsent />
       </body>
     </html>
   );

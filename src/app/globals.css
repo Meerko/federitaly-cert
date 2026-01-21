@@ -104,7 +104,7 @@
   --popover: oklch(1 0 0);
   --primary: oklch(0.5465 0.2455 262.87);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.585 0.132 257);
+  --secondary: oklch(0.3065 0.1276 273.17);
   --secondary-foreground: oklch(0.1408 0.0044 285.82);
   --muted: oklch(0.15 0.03 50 / 0.08);
   --muted-foreground: oklch(0.369 0.005 300);
@@ -156,6 +156,15 @@
   }
   .rounded-xl {
     border-radius: 2rem;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--secondary);
   }
 }
 .dark {

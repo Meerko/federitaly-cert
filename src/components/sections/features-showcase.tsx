@@ -17,7 +17,7 @@ const features = [
     description:
       'Una prima valutazione consente di verificare l’idoneità dell’azienda e dei prodotti rispetto ai requisiti della certificazione, fornendo indicazioni chiare prima di avviare il percorso.',
     image: {
-      src: '/images/features-showcase/analisi-preliminare.webp',
+      src: '/images/features-showcase/certificazione-audit.jpg',
       alt: 'Analisi preliminare di ammissibilità',
     },
   },
@@ -50,7 +50,7 @@ const features = [
     description:
       'Il certificato viene registrato in modo sicuro e non modificabile, garantendo integrità delle informazioni, tracciabilità e possibilità di verifica nel tempo.',
     image: {
-      src: '/images/features-showcase/blockchain.webp',
+      src: '/images/features-showcase/dfinity-federitaly.webp',
       alt: 'Notarizzazione tramite tecnologia blockchain',
     },
   },
@@ -152,7 +152,7 @@ export default function FeaturesShowcase() {
                   variants={contentVariants}
                 >
                   <div className="flex items-center gap-4">
-                    <Card className="flex size-12 shrink-0 items-center justify-center rounded-lg !p-0 md:size-16">
+                    <Card className="flex size-12 shrink-0 border border-secondary/10 items-center justify-center rounded-lg !p-0 md:size-16">
                       <IconComponent className="size-6 text-primary" strokeWidth={2.1} />
                     </Card>
                     <h3 className="text-2xl tracking-tight md:hidden lg:text-3xl">{feature.title}</h3>
@@ -185,9 +185,8 @@ export default function FeaturesShowcase() {
                     </>
                   )}
 
-                  <Card className="bg-chart-4 relative overflow-hidden">
-                    {/* ✅ padding coerente e box immagine a altezza fissa */}
-                    <CardContent className="">
+                  <Card className="bg-chart-4 py-4 relative overflow-hidden border-none shadow-lg/5">
+                    <CardContent className="px-4">
                       <div className="relative h-[220px] w-full overflow-hidden rounded-lg bg-muted md:h-[260px]">
                         <Image
                           src={feature.image.src}

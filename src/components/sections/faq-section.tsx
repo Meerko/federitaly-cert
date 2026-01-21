@@ -76,7 +76,7 @@ export default function FAQSection() {
                 <AccordionItem
                   key={faq.id}
                   value={faq.id}
-                  className="border-input hover:shadow-primary/5 rounded-lg !border px-6 py-2 transition-all duration-300 hover:shadow-md"
+                  className="border-secondary/10 hover:shadow-primary/5 rounded-lg !border px-6 py-2 transition-all duration-300 hover:shadow-md"
                 >
                   <AccordionTrigger className="cursor-pointer text-base font-medium hover:no-underline md:text-lg lg:text-xl">
                     {faq.question}
@@ -89,7 +89,7 @@ export default function FAQSection() {
             </Accordion>
           </div>
 
-          <Card className="hover:shadow-primary/5 h-full gap-6 transition-all duration-300 hover:shadow-lg">
+          <Card className="hover:shadow-primary/5 border-secondary/10 h-full gap-6 transition-all duration-300 hover:shadow-lg">
             <CardHeader className="gap-6 md:gap-8 lg:gap-11">
               <MessageSquare className="text-primary size-18 stroke-1 md:size-20" />
 

@@ -263,18 +263,18 @@ export default function FeaturesCarousel() {
               {features.map((feature) => (
                 <CarouselItem
                   key={feature.id}
-                  className="md:basis-[60%]"
+                  className="md:basis-[60%] mb-6"
                 >
-                  <Card className="bg-chart-4 border-input transition-all duration-300 h-full justify-between hover:shadow-lg p-6">
+                  <Card className="bg-chart-4 border-secondary/10 transition-all duration-300 h-full justify-between hover:shadow-lg p-6">
                     <CardHeader className="p-0">
                       <CardTitle className="text-lg leading-tight md:text-2xl lg:text-3xl">
                         {feature.title}
                       </CardTitle>
-                      <CardDescription className="text-sm md:text-lg text-balance">
+                      <CardDescription className="text-sm md:text-md text-balance">
                         {feature.description}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="flex flex-col gap-4 border border-input bg-background rounded-lg py-6">
+                    <CardContent className="flex flex-col gap-4 border border-secondary/10 bg-background rounded-lg py-6">
                       {feature.features.map((feature) => (
                       <div 
                       key={feature.name}

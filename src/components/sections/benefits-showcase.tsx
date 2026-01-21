@@ -90,7 +90,7 @@ function TopBottomCardColumn({
           />
         </div>
       )}
-      <Card className="gap-4">
+      <Card className="gap-4 border border-secondary/10">
         <CardHeader className="gap-0">
           <CardTitle className="text-xl leading-tight font-semibold text-balance ">{cardTitle}</CardTitle>
         </CardHeader>

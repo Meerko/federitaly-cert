@@ -104,7 +104,7 @@ export default function competitiveAdvantage() {
               {/* Second row - 1 full width image */}
               <Image
                 src="/images/competitive-advantage/federitaly-orominerva.webp"
-                alt="Modern office workspace"
+                alt="orominerva"
                 width={600}
                 height={256}
                 className="h-full w-full rounded-lg object-cover object-right"
@@ -114,7 +114,7 @@ export default function competitiveAdvantage() {
         </div>
         <div className="grid gap-4 pt-8 lg:!pt-16 !pb-0 md:grid-cols-3">
           {performanceStats.map((stat, index) => (
-            <Card key={index} className="bg-chart-4 gap-4 border-primary">
+            <Card key={index} className="bg-chart-4 gap-4 border-secondary/10 hover:shadow-lg/5 transition-all duration-300">
               <CardHeader>
                 <CardTitle className="text-xl leading-tight font-semibold text-balance">
                   {stat.value}

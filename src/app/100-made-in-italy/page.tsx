@@ -11,16 +11,16 @@ export default function Certification100MadeInItalyPage() {
   return (
     <main>
       {/* HERO */}
-      <section className="bg-[url(/images/bg-azzurro.png)] bg-cover bg-center bg-no-repeat relative flex flex-col items-center">
+      <section className="bg-[url(/images/bg-federitaly.png)] bg-cover bg-center bg-no-repeat relative flex flex-col items-center py-12">
       <div className="container z-1">
-      <div className="grid gap-8 lg:grid-cols-2 lg:items-center mt-16">
-          <div className="col-span-1 flex flex-col space-y-6 text-center lg:text-left justify-center lg:justify-start">
-            <Badge variant="default" className="text-sm text-primary group flex w-fit self-center lg:self-start items-center justify-center rounded-full border border-primary/10 bg-chart-4 px-4 py-1 tracking-tight shadow-lg/5">
+      <div className="grid lg:grid-cols-2 lg:items-center mt-16">
+          <div className="col-span-1 flex flex-col space-y-6 text-center lg:text-left justify-center lg:justify-start border border-white bg-chart-4/50 backdrop-blur-xl rounded-xl px-8 py-8 shadow-lg/10 order-2 lg:order-1">
+            <Badge variant="default" className="text-sm text-secondary group flex w-fit self-center lg:self-start items-center justify-center rounded-full border border-primary/10 bg-chart-4 px-4 py-1 tracking-tight shadow-lg/5">
                 <BadgeCheck className="size-6 text-md" /> Certificazione Federitaly
             </Badge>
 
-            <h1 className="text-5xl lg:text-6xl tracking-tight md:text-6xl">
-              100% Made in Italy
+            <h1 className="text-5xl lg:text-6xl tracking-tight md:text-6xl text-balance">
+              100% <br /> Made in Italy
             </h1>
 
             <p className="text-2xl text-bold text-muted-foreground/70">
@@ -32,11 +32,6 @@ export default function Certification100MadeInItalyPage() {
               dell’azienda è svolto in Italia, nel rispetto della normativa vigente e dei disciplinari Federitaly.
             </p>
 
-            <p className="max-w-2xl text-muted-foreground">
-              È una certificazione di processo, non di prodotto: ciò che viene certificato è il modo in cui
-              l’azienda produce.
-            </p>
-
             <div className="flex flex-wrap gap-3 self-center lg:self-start">
               <Button asChild>
                 <Link href="#apply">Richiedi la certificazione</Link>
@@ -45,18 +40,18 @@ export default function Certification100MadeInItalyPage() {
           </div>
 
           {/* Right visual card */}
-          <div className="col-span-1 flex items-center justify-center">
-            <Image src="/images/certificazioni/100-made-in-italy-federitaly.webp" alt="Certificazione Federitaly 100% Made in Italy" width={400} height={400} className="w-fit" />
+          <div className="col-span-1 flex items-center justify-center order-1 lg:order-2 z-1 mt-[-60] lg:mt-0">
+            <Image src="/images/certificazioni/100-made-in-italy-federitaly.webp" alt="Certificazione Federitaly 100% Made in Italy" width={400} height={400} className="p-24 lg:p-0 m-[-110]" />
           </div>
         </div>
       </div>
-      <div className="from-background pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent via-25% to-transparent z-0" />
+      <div className="from-background pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent via-65% to-transparent z-0" />
       </section>
 
       {/* COSA CERTIFICA */}
       <section className="container section-padding grid gap-6 lg:grid-cols-[0.4fr_0.6fr] lg:items-start space-y-6">
         <div className="space-y-6">
-          <Badge variant="default" className="text-sm text-primary group flex w-fit items-center justify-center rounded-full border border-primary/10 bg-chart-4 px-3 py-1 tracking-tight shadow-lg/5">
+          <Badge variant="default" className="text-sm text-secondary group flex w-fit items-center justify-center rounded-full border border-primary/10 bg-chart-4 px-3 py-1 tracking-tight shadow-lg/5">
             Cosa certifica
           </Badge>
           <h2 className="text-4xl">Processo produttivo <span className="text-primary">interamente italiano</span></h2>
@@ -66,7 +61,7 @@ export default function Certification100MadeInItalyPage() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2 border rounded-xl bg-chart-4 p-4">
+          <div className="space-y-2 border border-secondary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
             <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
               <BadgeCheck className="size-4 text-primary" />
             </span>
@@ -76,7 +71,7 @@ export default function Certification100MadeInItalyPage() {
             </p>
           </div>
 
-          <div className="space-y-2 border rounded-xl bg-chart-4 p-4">
+          <div className="space-y-2 border border-secondary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
             <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
               <BadgeCheck className="size-4 text-primary" />
             </span>
@@ -86,7 +81,7 @@ export default function Certification100MadeInItalyPage() {
             </p>
           </div>
 
-          <div className="space-y-2 border rounded-xl bg-chart-4 p-4">
+          <div className="space-y-2 border border-secondary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
             <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
               <BadgeCheck className="size-4 text-primary" />
             </span>
@@ -96,7 +91,7 @@ export default function Certification100MadeInItalyPage() {
             </p>
           </div>
 
-          <div className="space-y-2 border rounded-xl bg-chart-4 p-4">
+          <div className="space-y-2 border border-secondary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
             <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
               <BadgeCheck className="size-4 text-primary" />
             </span>
@@ -108,10 +103,47 @@ export default function Certification100MadeInItalyPage() {
         </div>
       </section>
 
+      {/* A CHI È RIVOLTA */}
+
+      <section className="container section-padding !pt-0 grid gap-6 lg:items-start space-y-6">
+        <div className="space-y-6">
+          <Badge variant="default" className="text-sm text-secondary group flex w-fit items-center justify-center rounded-full border border-primary/10 bg-chart-4 px-3 py-1 tracking-tight shadow-lg/5">
+            A chi è rivolta
+          </Badge>
+          <h2 className="text-4xl">Per le <span className="text-primary">imprese che producono valore </span> in Italia</h2>
+          <p className="text-muted-foreground text-balance">
+          La soluzione ideale per chi desidera comunicare correttamente l’italianità, rafforzare la credibilità sui mercati esteri e garantire conformità normativa nell’uso del claim Made in Italy.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <div className="space-y-2 border border-primary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
+            <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
+              <BadgeCheck className="size-4 text-primary" />
+            </span>
+            <p className="font-medium text-foreground">Aziende che producono interamente in Italia</p>
+          </div>
+
+          <div className="space-y-2 border border-primary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
+            <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
+              <BadgeCheck className="size-4 text-primary" />
+            </span>
+            <p className="font-medium text-foreground">Imprese che vogliono posizionarsi nella fascia alta del Made in Italy</p>
+          </div>
+
+          <div className="space-y-2 border border-primary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
+            <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
+              <BadgeCheck className="size-4 text-primary" />
+            </span>
+            <p className="font-medium text-foreground">Brand che puntano su reputazione, valore e identità</p>
+          </div>
+        </div>
+      </section>
+
       {/* COSA OTTIENE L'AZIENDA */}
       <section className="container grid gap-6 lg:grid-cols-[0.4fr_0.6fr] lg:items-start space-y-6">
         <div className="space-y-6">
-          <Badge variant="default" className="text-sm text-primary group flex w-fit items-center justify-center rounded-full border border-primary/10 bg-chart-4 px-3 py-1 tracking-tight shadow-lg/5">
+          <Badge variant="default" className="text-sm text-secondary group flex w-fit items-center justify-center rounded-full border border-primary/10 bg-chart-4 px-3 py-1 tracking-tight shadow-lg/5">
             Cosa ottiene l’azienda
           </Badge>
           <h2 className="text-4xl">Valore concreto per <span className="text-primary">reputazione</span>, <span className="text-primary">tutela</span> e <span className="text-primary">mercato</span></h2>
@@ -121,7 +153,7 @@ export default function Certification100MadeInItalyPage() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2 border rounded-xl bg-chart-4 p-4">
+          <div className="space-y-2 border border-secondary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
             <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
               <Star className="size-4 text-primary" />
             </span>
@@ -131,7 +163,7 @@ export default function Certification100MadeInItalyPage() {
             </p>
           </div>
 
-          <div className="space-y-2 border rounded-xl bg-chart-4 p-4">
+          <div className="space-y-2 border border-secondary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
             <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
               <Star className="size-4 text-primary" />
             </span>
@@ -141,7 +173,7 @@ export default function Certification100MadeInItalyPage() {
             </p>
           </div>
 
-          <div className="space-y-2 border rounded-xl bg-chart-4 p-4">
+          <div className="space-y-2 border border-secondary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
             <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
               <Star className="size-4 text-primary" />
             </span>
@@ -151,7 +183,7 @@ export default function Certification100MadeInItalyPage() {
             </p>
           </div>
 
-          <div className="space-y-2 border rounded-xl bg-chart-4 p-4">
+          <div className="space-y-2 border border-secondary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
             <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
               <Star className="size-4 text-primary" />
             </span>
@@ -160,7 +192,7 @@ export default function Certification100MadeInItalyPage() {
               Affidabilità verso buyer, clienti e istituzioni.
             </p>
           </div>
-          <div className="space-y-2 border rounded-xl bg-chart-4 p-4">
+          <div className="space-y-2 border border-secondary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
             <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
               <Star className="size-4 text-primary" />
             </span>
@@ -169,7 +201,7 @@ export default function Certification100MadeInItalyPage() {
               Strumento strategico per mercati e canali internazionali.
             </p>
           </div>
-          <div className="space-y-2 border rounded-xl bg-chart-4 p-4">
+          <div className="space-y-2 border border-secondary/10 hover:shadow-lg/5 transition-all duration-300 rounded-xl bg-chart-4 p-4">
             <span className="inline-flex p-2 items-center justify-center rounded-md border border-input bg-background">
               <Star className="size-4 text-primary" />
             </span>

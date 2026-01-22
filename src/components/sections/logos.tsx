@@ -11,52 +11,34 @@ import { cn } from '@/lib/utils';
 
 const companies = [
   {
-    name: 'Booking.com',
-    logo: '/images/logos/booking.svg',
+    name: 'Orygin',
+    logo: '/images/logos/origyn-logo.png',
     className: 'dark:hidden',
-    url: 'https://booking.com',
+    url: 'https://origyn.org',
   },
   {
-    name: 'Fortinet',
-    logo: '/images/logos/fortinet.svg',
+    name: 'Internet Computer',
+    logo: '/images/logos/ic-logo.png',
     className: 'dark:hidden',
-    url: 'https://fortinet.com',
+    url: 'https://internetcomputer.org',
   },
   {
-    name: 'IBM',
-    logo: '/images/logos/ibm.svg',
+    name: 'QMS Italia',
+    logo: '/images/logos/qms.webp',
     className: '',
-    url: 'https://ibm.com',
+    url: 'https://qmsitalia.it',
   },
   {
-    name: 'Logitech',
-    logo: '/images/logos/logitech.svg',
+    name: 'MIMIT',
+    logo: '/images/logos/mimit-logo.png',
     className: 'dark:hidden',
-    url: 'https://logitech.com',
+    url: 'https://mimit.it',
   },
   {
-    name: 'Netflix',
-    logo: '/images/logos/netflix.svg',
+    name: 'European Parliament',
+    logo: '/images/logos/eu-parl-logo.png',
     className: '',
-    url: 'https://netflix.com',
-  },
-  {
-    name: 'Spotify',
-    logo: '/images/logos/spotify.svg',
-    className: '',
-    url: 'https://spotify.com',
-  },
-  {
-    name: 'T-Mobile',
-    logo: '/images/logos/t-mobile.svg',
-    className: '',
-    url: 'https://t-mobile.com',
-  },
-  {
-    name: 'TIBCO',
-    logo: '/images/logos/tibc.svg',
-    className: '',
-    url: 'https://tibco.com',
+    url: 'https://europarl.europa.eu',
   },
 ];
 
@@ -85,13 +67,13 @@ export default function Logos() {
     <section className="section-padding relative">
       <Noise />
       <p className="container text-center text-base">
-        Over 2+ million teams rely on Lumen to collaborate and get work done.
+        Accreditati e riconosciuti dalle principali fondazioni e istituzioni italiane e europee.
       </p>
 
       <div>
         <Marquee
           pauseOnHover
-          className="mt-8 mask-r-from-60% mask-r-to-100% mask-l-from-60% mask-l-to-100% [--duration:20s] [--gap:4rem]"
+          className="mt-8 mask-r-from-60% mask-r-to-65% mask-l-from-60% mask-l-to-65% [--duration:20s] [--gap:4rem]"
         >
           {visibleCompanies.map((company) => (
             <Link
@@ -99,7 +81,7 @@ export default function Logos() {
               href={company.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="relative h-8 w-24 transition-transform duration-200 hover:scale-105"
+              className="relative h-12 w-32 transition-transform duration-200 hover:scale-105"
             >
               <Image
                 src={company.logo}

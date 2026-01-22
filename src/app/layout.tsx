@@ -12,6 +12,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
 
 import SilktideConsent from '@/components/cookie/SilktideConsent';
+import Script from 'next/script';
 
 const inter = Inter({
   variable: '--font-epilogue',
@@ -109,6 +110,40 @@ export default async function RootLayout({
           <Footer />
         </ThemeProvider>
         <SilktideConsent />
+        <Script
+          id="ga-consent-default"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+
+              gtag('consent', 'default', {
+                analytics_storage: 'denied',
+                ad_storage: 'denied',
+                functionality_storage: 'denied',
+                personalization_storage: 'denied',
+                security_storage: 'granted'
+              });
+            `,
+          }}
+        />
+
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-R1MWDY0P91"
+          strategy="afterInteractive"
+        />
+
+        <Script
+          id="ga-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              gtag('js', new Date());
+              gtag('config', 'G-R1MWDY0P91', { anonymize_ip: true });
+            `,
+          }}
+        />
       </body>
     </html>
   );

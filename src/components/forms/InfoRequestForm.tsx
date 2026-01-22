@@ -19,6 +19,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Send } from "lucide-react";
 import Link from "next/link";
+import { track } from "@/lib/ga";
 
 // (facoltativo) telefono: controllo leggero, non troppo aggressivo
 const phoneSchema = z
@@ -95,6 +96,11 @@ export default function InfoRequestForm() {
   const onSubmit = async (values: FormValues) => {
     setStatus("loading");
 
+    track("form_submit_attempt", {
+      form_type: "info",
+      page_path: typeof window !== "undefined" ? window.location.pathname : "",
+    });
+
     const res = await fetch("/api/requests", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -108,8 +114,17 @@ export default function InfoRequestForm() {
 
     if (!res.ok) {
       setStatus("error");
+      track("form_submit_error", {
+        form_type: "info",
+        page_path: typeof window !== "undefined" ? window.location.pathname : "",
+      });
       return;
     }
+
+    track("form_submit_success", {
+      form_type: "info",
+      page_path: typeof window !== "undefined" ? window.location.pathname : "",
+    });
 
     router.push("/thank-you");
   };

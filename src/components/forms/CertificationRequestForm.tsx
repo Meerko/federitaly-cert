@@ -27,6 +27,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Send } from "lucide-react";
 import Link from "next/link";
+import { track } from "@/lib/ga";
 
 const Sector = [
   { value: "ENOGASTRONOMIA", label: "Enogastronomia" },
@@ -128,6 +129,12 @@ export default function CertificationRequestForm() {
   const onSubmit = async (values: FormValues) => {
     setStatus("loading");
 
+    track("form_submit_attempt", {
+      form_type: "cert_request",
+      certification_type: values.certification_type,
+      page_path: typeof window !== "undefined" ? window.location.pathname : "",
+    });
+
     const res = await fetch("/api/requests", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -141,9 +148,21 @@ export default function CertificationRequestForm() {
 
     if (!res.ok) {
       setStatus("error");
+      track("form_submit_error", {
+        form_type: "cert_request",
+        certification_type: values.certification_type,
+        page_path: typeof window !== "undefined" ? window.location.pathname : "",
+      });
+  
       return;
     }
 
+    track("form_submit_success", {
+      form_type: "cert_request",
+      certification_type: values.certification_type,
+      page_path: typeof window !== "undefined" ? window.location.pathname : "",
+    });
+  
     // ✅ redirect thank you
     router.push("/thank-you");
   };

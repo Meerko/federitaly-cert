@@ -33,6 +33,22 @@ export default function SilktideConsent() {
               description:
                 "<p>Aiutano a capire come gli utenti utilizzano il sito.</p>",
               required: false,
+              onAccept: function () {
+                const gtag = (window as any).gtag;
+                if (gtag) {
+                  gtag("consent", "update", {
+                    analytics_storage: "granted",
+                  });
+                }
+              },
+              onReject: function () {
+                const gtag = (window as any).gtag;
+                if (gtag) {
+                  gtag("consent", "update", {
+                    analytics_storage: "denied",
+                  });
+                }
+              },
             },
             {
               id: "profilazione",

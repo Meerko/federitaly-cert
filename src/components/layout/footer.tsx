@@ -86,20 +86,20 @@ const Footer = () => {
   if (hideFooter) return null;
 
   return (
-    <footer className="relative border-t py-12">
+    <footer className="relative py-12 bg-secondary rounded-t-5xl">
       <Noise />
 
       <div className="container">
         <div className="grid grid-cols-1 gap-16 md:grid-cols-3">
 
           <div className="flex w-fit flex-col items-start justify-start md:col-span-1">
-            <Logo />
+            <Logo onlyLogo={true} />
             <div className="mt-4 space-y-3 md:mt-8">
             {GENERAL_INFO.map((section, index) => (
               <div key={index}>
                 <ul className="space-y-3">
                   {section?.data?.map((data, dataIndex) => (
-                    <li key={dataIndex} className='text-muted-foreground hover:text-foreground text-sm transition-colors'>                    
+                    <li key={dataIndex} className='text-background text-sm transition-colors'>                    
                         {data.name}
                     </li>
                   ))}
@@ -107,7 +107,7 @@ const Footer = () => {
                     <li key={linkIndex}>
                       <Link
                         href={link.href}
-                        className="text-muted-foreground hover:text-primary text-sm transition-colors"
+                        className="text-background hover:text-input hover:underline text-sm transition-colors"
                       >
                         {link.name}
                       </Link>
@@ -122,12 +122,12 @@ const Footer = () => {
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-1 md:col-span-1">
             {LEGAL_INFO.map((section, index) => (
               <div key={index}>
-                <h3 className="text-foreground mb-4 font-bold md:mb-8 h-8">
+                <h3 className="!text-background text-lg mb-4 md:mb-8 h-8">
                   {section.title}
                 </h3>
                 <ul className="space-y-3">
                   {section?.data?.map((data, dataIndex) => (
-                    <li key={dataIndex} className='text-muted-foreground hover:text-foreground text-sm transition-colors'>                    
+                    <li key={dataIndex} className='text-background text-sm transition-colors'>                    
                         {data.name}
                     </li>
                   ))}
@@ -135,7 +135,7 @@ const Footer = () => {
                     <li key={linkIndex}>
                       <Link
                         href={link.href}
-                        className="text-muted-foreground hover:text-primary text-sm transition-colors"
+                        className="text-background hover:text-input hover:underline text-sm transition-colors"
                       >
                         {link.name}
                       </Link>
@@ -148,7 +148,7 @@ const Footer = () => {
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-1 md:col-span-1">
             {SOCIAL.map((section, index) => (
               <div key={index}>
-                <h3 className="text-foreground mb-4 font-bold md:mb-8 h-8">
+                <h3 className="!text-background text-lg mb-4  md:mb-8 h-8">
                   {section.title}
                 </h3>
                 <ul className="space-y-3">
@@ -156,7 +156,7 @@ const Footer = () => {
                     <li key={linkIndex}>
                       <Link
                         href={link.href}
-                        className="text-muted-foreground hover:text-primary text-sm transition-colors flex items-center gap-2"
+                        className="text-background hover:text-input hover:underline text-sm transition-colors flex items-center gap-2"
                       >
                         {link.name} <ArrowUpRight className="size-4" />
                       </Link>
@@ -172,7 +172,7 @@ const Footer = () => {
           <div className="flex gap-6">
             <Link
               href="https://www.federitaly.it"
-              className="text-muted-foreground hover:text-primary text-sm transition-colors"
+              className="text-background hover:text-input hover:underline text-sm transition-colors"
             >
               © {new Date().getFullYear()} Federitaly
             </Link>

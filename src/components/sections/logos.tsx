@@ -64,7 +64,7 @@ export default function Logos() {
   });
 
   return (
-    <section className="section-padding relative">
+    <section className="section-padding !pb-0 relative">
       <Noise />
       <p className="container text-center text-base">
         Accreditati e riconosciuti dalle principali fondazioni e istituzioni italiane e europee.

@@ -162,7 +162,6 @@ export default function CertificationRequestForm() {
       certification_type: values.certification_type,
       page_path: typeof window !== "undefined" ? window.location.pathname : "",
     });
-  
     // ✅ redirect thank you
     router.push("/thank-you");
   };

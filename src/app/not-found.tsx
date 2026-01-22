@@ -134,7 +134,7 @@ export default function NotFound() {
             variant="default"
             className="mt-2 rounded-full !pl-5.5 before:rounded-full"
           >
-            <Link href="/contatti">
+            <Link href="/#contatti">
               Contattaci
               <div className="bg-background/15 border-background/10 grid size-5.5 place-items-center rounded-full border">
                 <ChevronRight className="size-4 transition-transform group-hover:translate-x-0.25" />

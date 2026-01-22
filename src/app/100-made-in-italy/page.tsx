@@ -217,7 +217,7 @@ export default function Certification100MadeInItalyPage() {
       /<FeaturesShowcase />
 
       {/* APPLY */}
-      <section id="apply" className="container mt-10 space-y-6 scroll-mt-24 overflow-hidden">
+      <section id="apply" className="section-padding !pt-0 container mt-10 space-y-6 scroll-mt-24 overflow-hidden">
         <div className="space-y-4 rounded-xl border border-primary p-6">
           <h3 className="text-4xl">Richiedi la certificazione</h3>
           <p className="text-muted-foreground">

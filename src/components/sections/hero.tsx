@@ -139,7 +139,6 @@ export default function Hero() {
         </motion.div>
         <div className="from-background pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent via-25% to-transparent" />
       </motion.div>
-      <Logos />
     </section>
   );
 }

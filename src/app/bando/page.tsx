@@ -3,19 +3,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import BandoFormPage from "@/app/bando/form/page";
 
 import CertificationRequestForm from "@/components/forms/CertificationRequestForm";
 
 import BandoHero from "@/components/bando/hero";
-import { Check, Cpu, DownloadIcon, File, Globe, Shield, Star } from "lucide-react";
-import Script from "next/script";
+import { Check, Cpu, DownloadIcon, File, Globe, Shield, Star } from "lucide-react";import Script from "next/script";
 
 const BANDO_PDF_URL =
   "https://federitaly.squarespace.com/s/Bando_Federitaly_2026_COMPLETO.pdf";
@@ -298,15 +292,7 @@ export default function BandoPage() {
             </section>
  
 
-          {/* APPLY + TOGGLE */}
-          <section id="apply" className="space-y-6 rounded-xl border border-primary p-6">
-            <h3 className="text-4xl">Compila la domanda</h3>
-            <p className="mt-2 text-muted-foreground">
-              Compila tutti i campi e invia la richiesta. <br/>
-               Ti ricontatteremo per i passaggi successivi.
-            </p>
-            <div className="p-6 rounded-xl bg-chart-4"><CertificationRequestForm/></div>
-          </section>
+         
         </div>
 
         {/* RIGHT SIDEBAR */}
@@ -348,6 +334,10 @@ export default function BandoPage() {
             </div>
         </div>
       </section>
+       {/* APPLY + TOGGLE */}
+       <section id="apply">
+            <BandoFormPage/>
+          </section>
     </main>
   );
 }

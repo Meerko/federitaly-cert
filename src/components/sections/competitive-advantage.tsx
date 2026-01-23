@@ -92,18 +92,18 @@ export default function competitiveAdvantage() {
               </div>
               <div className="relative h-48 overflow-hidden rounded-lg">
                 <Image
-                  src="/images/competitive-advantage/federitaly-polaretti.webp"
+                  src="/images/competitive-advantage/federitaly-orominerva.webp"
                   alt="Federitaly Polaretti"
                   width={300}
                   height={200}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover object-right"
                 />
               </div>
             </div>
             <div className="relative h-72 overflow-hidden rounded-lg">
               {/* Second row - 1 full width image */}
               <Image
-                src="/images/competitive-advantage/federitaly-orominerva.webp"
+                src="/images/competitive-advantage/marinella-certificazione.jpg"
                 alt="orominerva"
                 width={600}
                 height={256}

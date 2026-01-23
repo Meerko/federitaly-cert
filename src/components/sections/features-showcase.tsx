@@ -17,7 +17,7 @@ const features = [
     description:
       'Una prima valutazione consente di verificare l’idoneità dell’azienda e dei prodotti rispetto ai requisiti della certificazione, fornendo indicazioni chiare prima di avviare il percorso.',
     image: {
-      src: '/images/features-showcase/certificazione-audit.jpg',
+      src: '/images/features-showcase/certificazione-audit-crpd.jpg',
       alt: 'Analisi preliminare di ammissibilità',
     },
   },

@@ -13,8 +13,8 @@ export default function Hero() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const ACTION_BUTTONS = [
-    { label: 'Certificati', href: '/100-made-in-italy', variant: 'default' as const },
-    { label: 'Scopri come funziona', href: '/#processo', variant: 'ghost' as const },
+    { label: 'Richiedi informazioni', href: '#contatti', variant: 'default' as const },
+    { label: 'Scopri come funziona', href: '#processo', variant: 'ghost' as const },
   ];
 
   // Animation variants
@@ -128,7 +128,7 @@ export default function Hero() {
                 asChild
                 className="mt-2 rounded-xl !pl-5.5 before:rounded-full"
               >
-                <Link href={button.href} target="_blank">
+                <Link href={button.href}>
                   {button.label}
                   <div className="bg-background/15 border-background/10 grid size-5.5 place-items-center rounded-xl border">
                     <ChevronRight className="size-4" />
@@ -139,6 +139,7 @@ export default function Hero() {
         </motion.div>
         <div className="from-background pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent via-25% to-transparent" />
       </motion.div>
+      <Logos />
     </section>
   );
 }

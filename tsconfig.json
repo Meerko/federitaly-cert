@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
-, "src/app/certified-companies/page"  ],
+, "src/app/certified-companies/pagina"  ],
   "exclude": [
     "node_modules"
   ]

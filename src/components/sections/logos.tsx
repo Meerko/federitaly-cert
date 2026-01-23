@@ -29,16 +29,16 @@ const companies = [
     url: 'https://qmsitalia.it',
   },
   {
-    name: 'MIMIT',
-    logo: '/images/logos/mimit-logo.png',
+    name: 'UnieEportManager',
+    logo: '/images/logos/uniexport-logo.png',
     className: 'dark:hidden',
-    url: 'https://mimit.it',
+    url: 'https://uniexportmanager.it/',
   },
   {
-    name: 'European Parliament',
-    logo: '/images/logos/eu-parl-logo.png',
+    name: 'TradeOnChain',
+    logo: '/images/logos/tradeonchain-logo.png',
     className: '',
-    url: 'https://europarl.europa.eu',
+    url: 'https://tradeonchain.com',
   },
 ];
 
@@ -67,7 +67,7 @@ export default function Logos() {
     <section className="section-padding !pb-0 relative">
       <Noise />
       <p className="container text-center text-base">
-        Accreditati e riconosciuti dalle principali fondazioni e istituzioni italiane e europee.
+        Partner tecnologici di riferimento
       </p>
 
       <div>

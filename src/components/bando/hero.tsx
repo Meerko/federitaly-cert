@@ -83,7 +83,7 @@ const BandoHero = ({ className }: BandoHeroProps) => {
             </Button>
             <Button variant="outline" asChild>
               <a href={BANDO_PDF_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2">
-                <span>Scarica il regolamento</span>
+                <span>Scarica il bando</span>
                 <Download className="size-4" />
               </a>
             </Button>

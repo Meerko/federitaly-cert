@@ -319,10 +319,6 @@ export default function BandoPage() {
               <Button className="w-full" asChild>
                 <Link href="#apply">Richiedi il voucher</Link>
               </Button>
-
-              <p className="text-xs text-muted-foreground">
-                Quota residua a carico dell’impresa: <span className="text-foreground">850€ + IVA</span>.
-              </p>
             </CardContent>
           </Card>
         </aside>

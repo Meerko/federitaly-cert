@@ -52,8 +52,7 @@ export const NAV_LINKS = [
 ];
 
 const ACTION_BUTTONS = [
-  { label: 'Voucher 2026', href: '/bando', variant:'ghost' as const },
-  { label: 'Certificati', href: '/100-made-in-italy', variant: 'default' as const },
+  { label: 'Bando 2026', href: '/bando', variant:'default' as const },
 ];
 const Navbar = ({
   initialBannerVisible = true,
@@ -196,7 +195,7 @@ const Navbar = ({
                 key={button.label}
                 size="sm"
                 variant={button.variant}
-                className={cn("rounded-md shadow-none", button.variant === 'ghost' ? 'border border-primary' : '')}
+                className={cn("rounded-md shadow-none", button.variant === 'default' ? 'border border-primary' : '')}
                 asChild
               >
                 <Link href={button.href} target="_blank">{button.label}</Link>

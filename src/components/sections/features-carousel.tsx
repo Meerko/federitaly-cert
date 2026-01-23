@@ -28,7 +28,7 @@ const features = [
   {
     id: '100madeinitaly',
     title: '100% Made in Italy',
-    description: 'Per le aziende che svolgono l’intero processo produttivo in Italia, nel rispetto della normativa vigente e dei disciplinari Federitaly.',
+    description: "Per le aziende che svolgono l’intero processo produttivo in Italia, nel rispetto dell' Art. 16 L. 166/2009 e dei disciplinari Federitaly.",
     image: {
       src: '/images/certificazioni/100-made-in-italy-federitaly.webp',
       alt: '100% Made in Italy - Quando l’italianità è totale',
@@ -38,7 +38,7 @@ const features = [
     },
     features: [
       { name: 'Progettazione e sviluppo in Italia' },
-      { name: 'Produzione e trasformazione in Italia' },
+      { name: 'Produzione e trasformazione in Italia con materie prime qualificanti di origine italiana' },
       { name: 'Controllo del processo produttivo sul territorio nazionale' },
       { name: 'Coerenza tra dichiarazioni, documentazione e realtà aziendale' },
     ],
@@ -50,7 +50,7 @@ const features = [
   {
     id: 'madeinitaly',
     title: 'Made in Italy',
-    description: 'Per le aziende che mantengono in Italia le fasi strategiche e qualificanti del processo produttivo.',
+    description: "Per le aziende che mantengono in Italia le fasi strategiche e qualificanti del processo produttivo nel rispetto dell' Art 60. CDU e dei disciplinari Federitaly.",
     image: {
       src: '/images/certificazioni/made-in-italy-federitaly.webp',
       alt: 'Made in Italy - Quando l’Italia è parte essenziale del processo',

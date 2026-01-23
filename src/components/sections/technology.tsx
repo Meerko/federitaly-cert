@@ -68,7 +68,7 @@ const Technology = ({ className }: TechnologyProps) => {
           </ul>
           <div className="mt-10 flex gap-2">
             <Button className="!text-sm shadow-none" size="lg" asChild>
-              <Link href="/100-made-in-italy" target="_blank">Certificati
+              <Link href="#contatti">Richiedi informazioi
                 <div className="bg-background/15 border-background/10 grid size-5.5 place-items-center rounded-xl border">
                   <ChevronRight className="size-4" />
                 </div>

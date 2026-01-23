@@ -221,9 +221,10 @@ export default function Certification100MadeInItalyPage() {
       {/* APPLY */}
       <section id="apply" className="container mt-10  pb-24 space-y-6 scroll-mt-24 overflow-hidden">
         <div className="space-y-4 rounded-xl border border-primary p-6">
-          <h3 className="text-4xl">Richiedi la certificazione</h3>
+        <h3 className="text-4xl">Richiedi la pre-analisi <br /> per la certificazione</h3>
           <p className="text-muted-foreground">
-            Compila tutti i campi e invia la richiesta. Ti ricontatteremo per i passaggi successivi.
+            Compila tutti i campi e invia la richiesta. Ti ricontatteremo per i passaggi successivi. <br />
+            La pre-analisi è totalmente gratuita e non comporta nessun impegno.
           </p>
 
           <div className="p-6 rounded-xl bg-chart-4">
